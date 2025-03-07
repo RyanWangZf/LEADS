@@ -17,8 +17,11 @@ The model is trained on LEADSInstruct, a comprehensive dataset of 633,759 instru
 
 In rigorous evaluations, LEADS consistently outperformed four cutting-edge generic LLMs across six medical literature mining tasks. When integrated into expert workflows, LEADS demonstrated significant improvements in both quality and efficiency:
 
+![LEADS Performance Overview](figures/leads_performance_overview.png)
+
 - **Study Selection**: Experts using LEADS achieved 0.81 recall (vs. 0.77 for experts working alone) with 22.6% time savings
 - **Data Extraction**: Experts using LEADS achieved 0.85 accuracy (vs. 0.80 without LEADS) with 26.9% time savings
+
 
 ## Getting Started
 
@@ -52,11 +55,11 @@ In rigorous evaluations, LEADS consistently outperformed four cutting-edge gener
    git lfs install
 
    # Clone the model repository
-   git clone https://huggingface.co/zifeng-ai/leads-mistral-7b-v1 /path/to/models/zifeng-ai/leads-mistral-7b-v1
+   git clone https://huggingface.co/zifeng-ai/leads-mistral-7b-v1 /path/to/models/leads-mistral-7b-v1
    
    # Alternatively, you can use the Hugging Face CLI
    pip install huggingface_hub
-   huggingface-cli download zifeng-ai/leads-mistral-7b-v1 --local-dir /path/to/models/zifeng-ai/leads-mistral-7b-v1
+   huggingface-cli download zifeng-ai/leads-mistral-7b-v1 --local-dir /path/to/models/leads-mistral-7b-v1
    ```
 
 ## Configuring and Running LEADS
