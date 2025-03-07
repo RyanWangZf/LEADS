@@ -54,7 +54,16 @@ import pdb
 import os
 import re
 import json
-from leads.client import call_leads
+from ..client import call_leads
+import tiktoken
+
+def cut_paper_content(paper_content, max_tokens=29_000):
+    encoding = tiktoken.get_encoding("cl100k_base")
+    tokens = encoding.encode(paper_content)
+    if len(tokens) > max_tokens:
+        tokens = tokens[:max_tokens]
+        paper_content = encoding.decode(tokens)
+    return paper_content
 
 def extract_json_from_llm_output(text):
     """Extract eligibility predictions from LLM output text, with multiple fallback methods."""
@@ -171,12 +180,13 @@ def screening_study(paper_content, population=None, intervention=None, compariso
     }
     criteria, num_criteria = get_eligibility_criteria(PICO)
     criteria_text = stringfy_criteria(criteria)
+    paper_content = cut_paper_content(paper_content)
     prompt = SCREENING_PROMPT_TEMPLATE.format(paper_content=paper_content, num_criteria=num_criteria, criteria_text=criteria_text)
     results = call_leads(
         prompt, 
         endpoint=os.getenv("LEADS_ENDPOINT", "http://localhost:13141/v1"), 
         api_key=os.getenv("LEADS_API_KEY", "testtoken"),
-        temperature=0.7,
+        temperature=0.1,
         max_tokens=1024
     )
     # parse the results
@@ -210,13 +220,13 @@ def batch_screening_study(paper_contents, population=None, intervention=None, co
     }
     criteria, num_criteria = get_eligibility_criteria(PICO)
     criteria_text = stringfy_criteria(criteria)
-
+    paper_contents = [cut_paper_content(paper_content) for paper_content in paper_contents]
     prompts = [SCREENING_PROMPT_TEMPLATE.format(paper_content=paper_content, num_criteria=num_criteria, criteria_text=criteria_text) for paper_content in paper_contents]
     results = call_leads(
         prompts, 
         endpoint=os.getenv("LEADS_ENDPOINT", "http://localhost:13141/v1"), 
         api_key=os.getenv("LEADS_API_KEY", "testtoken"),
-        temperature=1.0,
+        temperature=0.1,
         max_tokens=1024
     )
     # parse the results
