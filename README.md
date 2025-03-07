@@ -155,18 +155,17 @@ Example output:
 
 ### 2. Study Screening
 
-LEADS can screen studies based on inclusion/exclusion criteria:
+LEADS can screen studies based on PICO criteria:
 
 ```python
 from leads.api import screen_study
 
-criteria = [
-    "Randomized controlled trials",
-    "Adult patients (≥18 years) with type 2 diabetes",
-    "Intervention must include SGLT2 inhibitors",
-    "Must report at least one cardiovascular outcome",
-    "Published in English between 2010-2023"
-]
+pico = {
+    "population": "Adult patients (≥18 years) with type 2 diabetes",
+    "intervention": "SGLT2 inhibitors",
+    "comparison": "Placebo or any active comparator",
+    "outcome": "Cardiovascular outcomes including blood pressure changes"
+}
 
 abstract = """
 [Title] Efficacy and Safety of Canagliflozin in Patients with Type 2 Diabetes: A Randomized Trial
@@ -176,7 +175,7 @@ Results: Mean age was 56 years. Canagliflozin significantly reduced HbA1c compar
 Conclusion: Canagliflozin improved glycemic control, reduced body weight, and lowered blood pressure in patients with type 2 diabetes.
 """
 
-result = screen_study(abstract, criteria)
+result = screen_study(abstract, **pico)
 print(result)
 ```
 
@@ -184,11 +183,10 @@ Example output:
 ```json
 {
   "evaluations": [
-    {"eligibility": "YES", "rationale": "The study is described as a randomized, double-blind trial."},
-    {"eligibility": "YES", "rationale": "The study includes adult patients with type 2 diabetes with a mean age of 56 years."},
-    {"eligibility": "YES", "rationale": "The intervention includes canagliflozin, which is an SGLT2 inhibitor."},
-    {"eligibility": "UNCERTAIN", "rationale": "While blood pressure is reported as a secondary outcome, it's not clear if this qualifies as a cardiovascular outcome."},
-    {"eligibility": "UNCERTAIN", "rationale": "The publication year is not mentioned in the abstract."}
+    {"criterion": "Population", "eligibility": "YES", "rationale": "The study includes adult patients with type 2 diabetes with a mean age of 56 years."},
+    {"criterion": "Intervention", "eligibility": "YES", "rationale": "The intervention includes canagliflozin, which is an SGLT2 inhibitor."},
+    {"criterion": "Comparison", "eligibility": "YES", "rationale": "The study uses placebo as a comparator."},
+    {"criterion": "Outcome", "eligibility": "YES", "rationale": "The study reports blood pressure as a secondary outcome, which is a cardiovascular parameter."},
   ]
 }
 ```
