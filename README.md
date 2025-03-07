@@ -41,11 +41,22 @@ In rigorous evaluations, LEADS consistently outperformed four cutting-edge gener
    pip install -r requirements.txt
    ```
 
-3. Download the LEADS model:
+3. Download the LEADS model from Hugging Face:
    ```bash
-   # Example - replace with actual download command
-   wget https://path-to-model/leads-mistral-7b-v0.3.tar.gz
-   tar -xzf leads-mistral-7b-v0.3.tar.gz -C /path/to/models/
+   # Install git-lfs if you don't have it already
+   apt-get install git-lfs  # For Ubuntu/Debian
+   # or
+   brew install git-lfs  # For macOS
+
+   # Initialize git-lfs
+   git lfs install
+
+   # Clone the model repository
+   git clone https://huggingface.co/zifeng-ai/leads-mistral-7b-v1 /path/to/models/zifeng-ai/leads-mistral-7b-v1
+   
+   # Alternatively, you can use the Hugging Face CLI
+   pip install huggingface_hub
+   huggingface-cli download zifeng-ai/leads-mistral-7b-v1 --local-dir /path/to/models/zifeng-ai/leads-mistral-7b-v1
    ```
 
 ## Configuring and Running LEADS
@@ -56,7 +67,7 @@ Create a configuration file `llm_server/vllm_config.yaml` with the following set
 
 ```yaml
 dtype: auto
-served_model_name: leads-mistral-7b-v0.3
+served_model_name: zifeng-ai/leads-mistral-7b-v1
 port: 13141
 api_key: testtoken
 gpu_memory_utilization: 0.6
@@ -69,25 +80,13 @@ Then create a `.env` file in the root directory to set the endpoint and API key:
 ```.env
 LEADS_ENDPOINT=http://localhost:13141/v1
 LEADS_API_KEY=testtoken
+MODEL_PATH=zifeng-ai/leads-mistral-7b-v1
+CUDA_DEVICE=0
 ```
 
 ### 2. Start the LEADS Server
 
 Use the provided script in `llm_server/vllm_serve.sh`:
-
-```bash
-#!/bin/bash
-
-# Kill any existing process on the port
-kill -9 $(lsof -t -i:13141) 2>/dev/null || true
-
-# Set CUDA device
-export CUDA_VISIBLE_DEVICES=0  # Change to your preferred GPU
-
-# Start vLLM server
-MODEL_PATH=/path/to/models/leads-mistral-7b-v0.3
-vllm serve $MODEL_PATH --config llm_server/vllm_config.yaml
-```
 
 Make it executable and run:
 ```bash
@@ -113,7 +112,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="leads-mistral-7b-v0.3",
+    model="zifeng-ai/leads-mistral-7b-v1",
     messages=[
         {"role": "user", "content": "What is the PICO framework in evidence-based medicine?"}
     ],
@@ -133,7 +132,7 @@ LEADS specializes in three main tasks for systematic reviews:
 LEADS can help formulate effective search strategies for medical literature:
 
 ```python
-from leads.modules.search import generate_search_query
+from leads.api import generate_search_query
 
 pico = {
     "population": "Adults with type 2 diabetes",
@@ -156,7 +155,7 @@ Example output:
 LEADS can screen studies based on inclusion/exclusion criteria:
 
 ```python
-from leads.modules.screening import screen_study
+from leads.api import screen_study
 
 criteria = [
     "Randomized controlled trials",
@@ -196,7 +195,7 @@ Example output:
 LEADS can extract structured data from medical studies:
 
 ```python
-from leads.modules.extraction import extract_study_characteristics
+from leads.api import extract_study_characteristics
 
 full_text = """
 Title: Efficacy and Safety of Canagliflozin in Patients with Type 2 Diabetes: A Randomized Trial
@@ -232,7 +231,7 @@ Example output:
 LEADS can extract detailed population statistics from clinical trials:
 
 ```python
-from leads.modules.population_statistics_extraction import extract_population_statistics
+from leads.api import extract_population_statistics
 
 result = extract_population_statistics(full_text)
 print(result)
@@ -255,7 +254,7 @@ Example output:
 LEADS can extract structured outcome data from clinical trials:
 
 ```python
-from leads.modules.trial_result_extraction import extract_trial_results
+from leads.api import extract_trial_results
 
 result = extract_trial_results(full_text)
 print(result)
