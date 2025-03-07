@@ -17,7 +17,9 @@ The model is trained on LEADSInstruct, a comprehensive dataset of 633,759 instru
 
 In rigorous evaluations, LEADS consistently outperformed four cutting-edge generic LLMs across six medical literature mining tasks. When integrated into expert workflows, LEADS demonstrated significant improvements in both quality and efficiency:
 
-![LEADS Performance Overview](figures/leads_performance_overview.png)
+<p align="center">
+  <img src="figures/leads_performance_overview.png" alt="LEADS Performance Overview" width="60%"/>
+</p>
 
 - **Study Selection**: Experts using LEADS achieved 0.81 recall (vs. 0.77 for experts working alone) with 22.6% time savings
 - **Data Extraction**: Experts using LEADS achieved 0.85 accuracy (vs. 0.80 without LEADS) with 26.9% time savings
