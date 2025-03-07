@@ -137,22 +137,22 @@ LEADS specializes in three main tasks for systematic reviews:
 LEADS can help formulate effective search strategies for medical literature:
 
 ```python
-from leads.api import generate_search_query
+from leads.api import search_query_generation
 
 pico = {
     "population": "Adults with type 2 diabetes",
     "intervention": "SGLT2 inhibitors",
-    "comparator": "GLP-1 receptor agonists",
+    "comparison": "GLP-1 receptor agonists",
     "outcome": "Cardiovascular outcomes and glycemic control"
 }
 
-search_query = generate_search_query(pico)
+search_query = search_query_generation(**pico)
 print(search_query)
 ```
 
 Example output:
-```
-(("type 2 diabetes"[MeSH Terms] OR "type 2 diabetes"[Title/Abstract] OR "T2DM"[Title/Abstract]) AND ("sodium-glucose transporter 2 inhibitors"[MeSH Terms] OR "SGLT2 inhibitors"[Title/Abstract] OR "canagliflozin"[Title/Abstract] OR "dapagliflozin"[Title/Abstract] OR "empagliflozin"[Title/Abstract]) AND ("glucagon-like peptide-1 receptor agonists"[MeSH Terms] OR "GLP-1 receptor agonists"[Title/Abstract] OR "liraglutide"[Title/Abstract] OR "semaglutide"[Title/Abstract] OR "dulaglutide"[Title/Abstract]) AND ("cardiovascular"[Title/Abstract] OR "heart failure"[MeSH Terms] OR "myocardial infarction"[MeSH Terms] OR "stroke"[MeSH Terms] OR "glycemic control"[Title/Abstract] OR "HbA1c"[Title/Abstract] OR "hemoglobin A1c"[MeSH Terms]))
+```json
+['((pulmonary atelectasis) OR (type 2 diabetes AND incretin deficiency) OR (type 2 diabetes AND established cardiovascular disease) OR (type 2 diabetes) OR (type 2 diabetes AND patients uncontrolled on metformin)) AND ((sonographic technique) OR (5-HTQ) OR (empagliflozin) OR (pharmacogenomics) OR (linagliptin))', '((pulmonary atelectasis) OR (type 2 diabetes AND incretin deficiency) OR (type 2 diabetes AND established cardiovascular disease) OR (type 2 diabetes) OR (type 2 diabetes AND patients uncontrolled on metformin)) AND ((saxagliptin) OR (Empagliflozin AND Fixed-Dose) OR (teglazidine) OR (teglazidine AND sulphonylurea) OR (empagliflozin AND SGLT2 inhibitor))', '((pulmonary atelectasis) OR (type 2 diabetes AND incretin deficiency) OR (type 2 diabetes AND established cardiovascular disease) OR (type 2 diabetes) OR (type 2 diabetes AND patients uncontrolled on metformin)) AND ((dapagliflozin))', '((type 2 diabetes AND treatment-naive participants) OR (type 2 diabetes AND Japanese patients AND urine glucose) OR (type 2 diabetes AND older patients) OR (type 2 diabetes AND naive patients) OR (Typical schistosomiasis AND Buruli ulcer AND African hydatid)) AND ((sonographic technique) OR (5-HTQ) OR (empagliflozin) OR (pharmacogenomics) OR (linagliptin))', '((type 2 diabetes AND treatment-naive participants) OR (type 2 diabetes AND Japanese patients AND urine glucose) OR (type 2 diabetes AND older patients) OR (type 2 diabetes AND naive patients) OR (Typical schistosomiasis AND Buruli ulcer AND African hydatid)) AND ((saxagliptin) OR (Empagliflozin AND Fixed-Dose) OR (teglazidine) OR (teglazidine AND sulphonylurea) OR (empagliflozin AND SGLT2 inhibitor))', '((type 2 diabetes AND treatment-naive participants) OR (type 2 diabetes AND Japanese patients AND urine glucose) OR (type 2 diabetes AND older patients) OR (type 2 diabetes AND naive patients) OR (Typical schistosomiasis AND Buruli ulcer AND African hydatid)) AND ((dapagliflozin))', '((type 2 diabetes AND insufficiently controlled) OR (type 2 diabetes AND metformin-treated patients AND metformin-intolerant patients) OR (type 2 diabetes AND established cardiovascular disease) OR (type 2 diabetes AND inadequate glycemic control AND obese patients) OR (type 2 diabetes AND intolerant to metformin)) AND ((sonographic technique) OR (5-HTQ) OR (empagliflozin) OR (pharmacogenomics) OR (linagliptin))', '((type 2 diabetes AND insufficiently controlled) OR (type 2 diabetes AND metformin-treated patients AND metformin-intolerant patients) OR (type 2 diabetes AND established cardiovascular disease) OR (type 2 diabetes AND inadequate glycemic control AND obese patients) OR (type 2 diabetes AND intolerant to metformin)) AND ((saxagliptin) OR (Empagliflozin AND Fixed-Dose) OR (teglazidine) OR (teglazidine AND sulphonylurea) OR (empagliflozin AND SGLT2 inhibitor))', '((type 2 diabetes AND insufficiently controlled) OR (type 2 diabetes AND metformin-treated patients AND metformin-intolerant patients) OR (type 2 diabetes AND established cardiovascular disease) OR (type 2 diabetes AND inadequate glycemic control AND obese patients) OR (type 2 diabetes AND intolerant to metformin)) AND ((dapagliflozin))', '((type 2 diabetes AND established cardiovascular disease)) AND ((sonographic technique) OR (5-HTQ) OR (empagliflozin) OR (pharmacogenomics) OR (linagliptin))', '((type 2 diabetes AND established cardiovascular disease)) AND ((saxagliptin) OR (Empagliflozin AND Fixed-Dose) OR (teglazidine) OR (teglazidine AND sulphonylurea) OR (empagliflozin AND SGLT2 inhibitor))', '((type 2 diabetes AND established cardiovascular disease)) AND ((dapagliflozin))']
 ```
 
 ### 2. Study Screening
@@ -160,7 +160,7 @@ Example output:
 LEADS can screen studies based on PICO criteria:
 
 ```python
-from leads.api import screen_study
+from leads.api import screening_study
 
 pico = {
     "population": "Adult patients (≥18 years) with type 2 diabetes",
@@ -177,7 +177,7 @@ Results: Mean age was 56 years. Canagliflozin significantly reduced HbA1c compar
 Conclusion: Canagliflozin improved glycemic control, reduced body weight, and lowered blood pressure in patients with type 2 diabetes.
 """
 
-result = screen_study(abstract, **pico)
+result = screening_study(abstract, **pico)
 print(result)
 ```
 

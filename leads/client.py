@@ -3,7 +3,7 @@ import asyncio
 from openai import AsyncOpenAI
 from tqdm import tqdm
 
-async def call_llm_single(prompt, pmid, client, model="leads-mistral-7b-v0.3", temperature=1.0, max_tokens=1024):
+async def call_llm_single(prompt, pmid, client, model="zifeng-ai/leads-mistral-7b-v1", temperature=1.0, max_tokens=1024):
     """Make a single async call to the LLM."""
     try:
         response = await client.chat.completions.create(
@@ -49,7 +49,7 @@ async def batch_call_leads_with_client(prompts, pmids, model="leads-mistral-7b-v
         
         return ordered_responses
 
-def call_leads(prompts, prompt_ids=None, model="leads-mistral-7b-v0.3", batch_size=20, endpoint=None, api_key=None, temperature=1.0, max_tokens=1024):
+def call_leads(prompts, prompt_ids=None, model="zifeng-ai/leads-mistral-7b-v1", batch_size=20, endpoint=None, api_key=None, temperature=1.0, max_tokens=1024):
     """Synchronous wrapper for batch processing with LEADS model."""    
     if isinstance(prompts, str):
         prompts = [prompts]
