@@ -209,7 +209,12 @@ Results: Mean age was 56 years. Canagliflozin significantly reduced HbA1c compar
 Conclusion: Canagliflozin improved glycemic control, reduced body weight, and lowered blood pressure in patients with type 2 diabetes.
 """
 
-characteristics = extract_study_characteristics(full_text)
+characteristics = extract_study_characteristics(full_text, 
+fields_info = [
+    "n: number of subjects involved in the study for analysis",
+    "condition: the target conditions",
+    "intervention: the target interventions"
+])
 print(characteristics)
 ```
 
@@ -217,64 +222,9 @@ Example output:
 ```json
 {
   "fields": [
-    {"name": "study_design", "value": "Randomized Controlled Trial"},
-    {"name": "sample_size", "value": 258},
-    {"name": "intervention", "value": "Canagliflozin (100mg or 300mg)"},
-    {"name": "comparator", "value": "Placebo"},
-    {"name": "primary_outcome", "value": "Change in HbA1c"},
-    {"name": "study_duration", "value": "52 weeks"}
-  ]
-}
-```
-
-## Advanced Features
-
-### Population Statistics Extraction
-
-LEADS can extract detailed population statistics from clinical trials:
-
-```python
-from leads.api import extract_population_statistics
-
-result = extract_population_statistics(full_text)
-print(result)
-```
-
-Example output:
-```json
-{
-  "results": [
-    {"groupId": "BG000", "value": 86.0, "note": "Male participants in intervention group"},
-    {"groupId": "BG001", "value": 84.0, "note": "Male participants in control group"},
-    {"groupId": "BG000", "value": 56.3, "note": "Mean age in intervention group"},
-    {"groupId": "BG001", "value": 55.7, "note": "Mean age in control group"}
-  ]
-}
-```
-
-### Trial Results Extraction
-
-LEADS can extract structured outcome data from clinical trials:
-
-```python
-from leads.api import extract_trial_results
-
-result = extract_trial_results(full_text)
-print(result)
-```
-
-Example output:
-```json
-{
-  "paramType": "MEAN_CHANGE",
-  "unitOfMeasure": "Percentage points",
-  "timeFrame": "52 weeks",
-  "unitOfDenom": "Participants",
-  "denomValue": 258.0,
-  "results": [
-    {"value": -0.77, "title": "Canagliflozin 100mg"},
-    {"value": -1.03, "title": "Canagliflozin 300mg"},
-    {"value": 0.0, "title": "Placebo"}
+    {"name": "n", "value": 258},
+    {"name": "condition", "value": "Type 2 diabetes"},
+    {"name": "intervention", "value": "Canagliflozin (100mg or 300mg)"}
   ]
 }
 ```
