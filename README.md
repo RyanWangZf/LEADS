@@ -24,6 +24,12 @@ In rigorous evaluations, LEADS consistently outperformed four cutting-edge gener
 - **Study Selection**: Experts using LEADS achieved 0.81 recall (vs. 0.77 for experts working alone) with 22.6% time savings
 - **Data Extraction**: Experts using LEADS achieved 0.85 accuracy (vs. 0.80 without LEADS) with 26.9% time savings
 
+## Model and data
+
+LEADS Model: https://huggingface.co/zifeng-ai/leads-mistral-7b-v1
+
+LEADSInstruct dataset: https://huggingface.co/datasets/zifeng-ai/LEADSInstruct
+
 
 ## Getting Started
 
